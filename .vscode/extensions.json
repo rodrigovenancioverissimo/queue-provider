@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "kavod-io.vscode-jest-test-adapter",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "GitHub.copilot",
+    "IronGeek.vscode-env",
+    "ryanluker.vscode-coverage-gutters"
+  ]
+}

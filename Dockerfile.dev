@@ -1,0 +1,4 @@
+FROM rodrigovenancioverissimo/devnvmcontainer:latest
+WORKDIR /app
+EXPOSE 3000
+CMD [ "./post-up.sh"]

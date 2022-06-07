@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  queue-provider:
+    container_name: queue-provider
+    build:
+      context: ../
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ../:/app
+      - ~/.ssh:/root/.ssh:ro
+      - ~/.gitconfig:/root/.gitconfig:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: /bin/sh -c "while sleep 1000; do :; done"
+  localstack:
+    image: localstack/localstack:latest
+    container_name: queue-provider-localstack
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=sqs
+      - DEBUG=0
+      - DATA_DIR=/tmp/localstack/data
+      - PERSISTENCE_SINGLE_FILE=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/localstack:/tmp/localstack

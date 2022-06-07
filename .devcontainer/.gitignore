@@ -1,0 +1,2 @@
+data/localstack/*
+!data/localstack/.gitkeep
