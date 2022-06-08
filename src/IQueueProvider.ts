@@ -1,6 +1,6 @@
 import SQS from 'aws-sdk/clients/sqs';
 
-interface IQueueProvider {
+export default interface IQueueProvider {
   sendMessage(params: IQueueProviderAddInput): Promise<IQueueProviderAddOutput>;
   createQueue(
     params: IQueueProviderCreateQueueInput
@@ -12,8 +12,6 @@ interface IQueueProvider {
     params: IQueueProviderCreateConsumerInput
   ): Promise<ConsumerIGD>;
 }
-
-export default IQueueProvider;
 
 export type IQueueProviderCreateConsumerInput = {
   queueName: string;
