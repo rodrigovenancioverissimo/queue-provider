@@ -3,6 +3,8 @@
 Provider inicialmente com suporte ao SQS e uma implementação em memória para fins de testes.
 A ideia é reunir todas as implementações de fila em um único lugar para facilitar a manutenção. Sendo compatível com qualquer fila.
 
+Suporte ao Node.js `14.x`, `16.x`, `18.x`.
+
 Suporte as implementações:
 - [x] SQS
 - [x] QueueInMemory

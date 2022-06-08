@@ -21,6 +21,9 @@
     "test:cov": "jest --coverage --no-cache --runInBand",
     "addscope": "node tools/packagejson name @rodrigovenancioverissimo/queue-provider"
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
