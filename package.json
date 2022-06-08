@@ -1,6 +1,6 @@
 {
   "name": "queue-provider",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Provider inicialmente com suporte ao SQS e uma implementação em memória para fins de testes",
   "main": "dist/cjs/index.js",
   "umd:main": "dist/umd/index.js",
