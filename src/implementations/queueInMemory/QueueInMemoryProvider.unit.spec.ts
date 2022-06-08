@@ -1,5 +1,4 @@
 import createQueueFactory from '../../factories/createQueueFactory';
-import { container } from 'tsyringe';
 import QueueInMemoryProvider from './QueueInMemoryProvider';
 import IQueueProvider from '../../IQueueProvider';
 import sendMessageFactory from '../../factories/sendMessageFactory';
@@ -8,11 +7,7 @@ import ConsumerInMemory from './ConsumerInMemory';
 let queueProvider: IQueueProvider;
 describe('QueueInMemoryProvider', () => {
   beforeAll(() => {
-    container.registerSingleton<IQueueProvider>(
-      'QueueProvider',
-      QueueInMemoryProvider
-    );
-    queueProvider = container.resolve('QueueProvider');
+    queueProvider = new QueueInMemoryProvider();
   });
   describe('sendMessage', () => {
     describe('happy way', () => {

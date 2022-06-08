@@ -1,7 +1,6 @@
 import createQueueFactory from '../../factories/createQueueFactory';
 import SQS from 'aws-sdk/clients/sqs';
 import faker from '@faker-js/faker';
-import { container } from 'tsyringe';
 import sendMessageFactory from '../../factories/sendMessageFactory';
 import IQueueProvider from '../../IQueueProvider';
 import QueueSqsProvider from './QueueSqsProvider';
@@ -11,8 +10,7 @@ let queueProvider: IQueueProvider;
 
 describe('QueueSqsProvider', () => {
   beforeAll(async () => {
-    container.registerSingleton('QueueProvider', QueueSqsProvider);
-    queueProvider = container.resolve('QueueProvider');
+    queueProvider = new QueueSqsProvider();
   });
 
   describe('sendMessage', () => {

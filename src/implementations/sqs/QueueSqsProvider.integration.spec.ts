@@ -1,5 +1,4 @@
 import createQueueFactory from '../../factories/createQueueFactory';
-import { container } from 'tsyringe';
 import QueueSqsProvider from './QueueSqsProvider';
 import IQueueProvider from '../../IQueueProvider';
 import { Consumer } from 'sqs-consumer';
@@ -7,11 +6,7 @@ import { Consumer } from 'sqs-consumer';
 let queueProvider: IQueueProvider;
 describe('QueueSqsProvider', () => {
   beforeAll(() => {
-    container.registerSingleton<IQueueProvider>(
-      'QueueProvider',
-      QueueSqsProvider
-    );
-    queueProvider = container.resolve('QueueProvider');
+    queueProvider = new QueueSqsProvider();
   });
   it('should be able to create a new queue', async () => {
     const queue = await queueProvider.createQueue(createQueueFactory());

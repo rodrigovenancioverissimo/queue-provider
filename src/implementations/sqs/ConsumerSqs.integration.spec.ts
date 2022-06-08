@@ -1,4 +1,3 @@
-import { container } from 'tsyringe';
 import { ConsumerIGD } from '../../IQueueProvider';
 import QueueProvider from '../..';
 
@@ -7,8 +6,7 @@ describe('ConsumerSqs', () => {
   let consumer: ConsumerIGD;
 
   beforeAll(async () => {
-    container.registerSingleton(QueueProvider);
-    queueProvider = container.resolve(QueueProvider);
+    queueProvider = new QueueProvider();
     await queueProvider.createQueue({
       queueName: 'test',
     });

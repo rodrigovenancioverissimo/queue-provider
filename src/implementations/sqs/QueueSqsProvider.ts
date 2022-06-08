@@ -9,11 +9,9 @@ import IQueueProvider, {
 } from '../../IQueueProvider';
 import SQS from 'aws-sdk/clients/sqs';
 import settings from '../../settings';
-import { injectable } from 'tsyringe';
 import AppError from '../../exceptions/AppError';
 import ConsumerSqs from './ConsumerSqs';
 
-@injectable()
 class QueueSqsProvider implements IQueueProvider {
   private client: SQS;
 
