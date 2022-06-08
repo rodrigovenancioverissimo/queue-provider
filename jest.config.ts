@@ -17,4 +17,7 @@ export default {
   preset: 'ts-jest',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testMatch: ['**/?(*.)+(unit.spec.ts)'],
+  transform: {
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
+  },
 };
