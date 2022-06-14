@@ -1,4 +1,5 @@
 import SQS from 'aws-sdk/clients/sqs';
+import { Consumer } from 'sqs-consumer';
 
 export default interface IQueueProvider {
   sendMessage(params: IQueueProviderAddInput): Promise<IQueueProviderAddOutput>;
@@ -8,10 +9,13 @@ export default interface IQueueProvider {
   checkQueueExists(
     params: IQueueProviderCheckQueueExistsInput
   ): Promise<boolean>;
-  createConsumer(
-    params: IQueueProviderCreateConsumerInput
-  ): Promise<ConsumerIGD>;
+  createConsumer(params: IQueueProviderCreateConsumerInput): Promise<IConsumer>;
+  deleteQueue(params: IQueueProviderDeleteQueueInput): Promise<void>;
 }
+
+export type IQueueProviderDeleteQueueInput = {
+  queueName: string;
+};
 
 export type IQueueProviderCreateConsumerInput = {
   queueName: string;
@@ -55,14 +59,4 @@ interface Events {
   processing_error: [Error, SQS.Message];
   stopped: [];
 }
-export declare class ConsumerIGD {
-  start(): void;
-  stop(): void;
-  on<T extends keyof Events>(
-    event: T,
-    listener: (...args: Events[T]) => void
-  ): this;
-  get isRunning(): boolean;
-  static create(options: any): ConsumerIGD;
-  numberOfMessages(): Promise<number>;
-}
+export declare class IConsumer extends Consumer {}

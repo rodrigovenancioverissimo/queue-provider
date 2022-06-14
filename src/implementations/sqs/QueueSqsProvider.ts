@@ -1,23 +1,24 @@
 import IQueueProvider, {
-  ConsumerIGD,
+  IConsumer,
   IQueueProviderAddInput,
   IQueueProviderAddOutput,
   IQueueProviderCheckQueueExistsInput,
   IQueueProviderCreateConsumerInput,
   IQueueProviderCreateQueueInput,
   IQueueProviderCreateQueueOutput,
+  IQueueProviderDeleteQueueInput,
 } from '../../IQueueProvider';
 import SQS from 'aws-sdk/clients/sqs';
 import settings from '../../settings';
 import AppError from '../../exceptions/AppError';
-import ConsumerSqs from './ConsumerSqs';
+import { Consumer } from 'sqs-consumer';
 
 class QueueSqsProvider implements IQueueProvider {
   private client: SQS;
 
   constructor() {
     this.client = new SQS({
-      endpoint: settings.aws.endpoint,
+      endpoint: settings.aws.sqs.endpoint,
       credentials: {
         accessKeyId: settings.aws.credentials.accessKeyId,
         secretAccessKey: settings.aws.credentials.secretAccessKey,
@@ -29,9 +30,9 @@ class QueueSqsProvider implements IQueueProvider {
   async createConsumer({
     queueName,
     handleMessage,
-  }: IQueueProviderCreateConsumerInput): Promise<ConsumerIGD> {
+  }: IQueueProviderCreateConsumerInput): Promise<IConsumer> {
     const queueUrl = this.getEndpoint(queueName);
-    const consumer = ConsumerSqs.create({
+    const consumer = Consumer.create({
       queueUrl,
       handleMessage,
       sqs: this.client,
@@ -93,11 +94,18 @@ class QueueSqsProvider implements IQueueProvider {
     return !!queueUrl;
   }
 
+  async deleteQueue({
+    queueName,
+  }: IQueueProviderDeleteQueueInput): Promise<void> {
+    const resp = await this.client
+      .deleteQueue({ QueueUrl: this.getEndpoint(queueName) })
+      .promise();
+    if (resp.$response.error)
+      throw new AppError({ message: 'Not able to delete queue' });
+  }
+
   private getEndpoint(queueName: string): string {
-    if (['development', 'test'].includes(settings.environment)) {
-      return `${settings.aws.endpoint}/000000000000/${queueName}`;
-    }
-    return `https://sqs.${settings.aws.region}.amazonaws.com/${settings.aws.accountId}/${queueName}`;
+    return `${settings.aws.sqs.endpoint}/${settings.aws.accountId}/${queueName}`;
   }
 }
 

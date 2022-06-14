@@ -1,19 +1,25 @@
-import { ConsumerIGD } from '../../IQueueProvider';
-import QueueProvider from '../..';
+import IQueueProvider, { IConsumer } from '../../IQueueProvider';
+import QueueSqsProvider from './QueueSqsProvider';
+import sleep from '../../utils/sleep';
 
 describe('ConsumerSqs', () => {
-  let queueProvider: QueueProvider;
-  let consumer: ConsumerIGD;
+  let queueProvider: IQueueProvider;
+  let consumer: IConsumer;
+  const queueName = 'queue-name';
 
   beforeAll(async () => {
-    queueProvider = new QueueProvider();
+    queueProvider = new QueueSqsProvider();
     await queueProvider.createQueue({
-      queueName: 'test',
+      queueName,
     });
     consumer = await queueProvider.createConsumer({
-      queueName: 'test',
+      queueName,
       handleMessage: jest.fn(),
     });
+  });
+
+  afterAll(async () => {
+    consumer.stop();
   });
 
   it('should be defined', () => {
@@ -26,29 +32,21 @@ describe('ConsumerSqs', () => {
   });
 
   it('should stop', () => {
-    consumer.start();
     consumer.stop();
     expect(consumer.isRunning).toBeFalsy();
   });
 
-  it('should count messages', async () => {
-    const numberOfMessages = await consumer.numberOfMessages();
-    expect(typeof numberOfMessages).toBe('number');
-  });
-
-  // TODO: Não está consumindo mensagens
   // it('should consume', async () => {
   //   consumer.stop();
   //   await queueProvider.sendMessage({
-  //     queueName: 'test',
+  //     queueName,
   //     body: 'test',
   //   });
-  //   expect(await consumer.numberOfMessages()).toBeGreaterThan(0);
-  //   consumer.start();
-  //   while ((await consumer.numberOfMessages()) > 0) {
-  //     await sleep({ ms: 100 });
-  //   }
+  //   const callback = jest.fn();
+  //   consumer.on('message_processed', (message) => callback(message));
+  //   // consumer.start();
+  //   await sleep({ ms: 3000 });
+  //   expect(callback).toHaveBeenCalled();
   //   consumer.stop();
-  //   expect('Number of Messages is Zero').toBeTruthy();
   // });
 });
